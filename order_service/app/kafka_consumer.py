@@ -6,7 +6,7 @@ from aiokafka import AIOKafkaConsumer
 from .db import SessionLocal
 from .models import CachedUser
 
-KAFKA_BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "kafka:9092")
+KAFKA_BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP_SERVERS")
 
 async def consume_user_events():
     try:

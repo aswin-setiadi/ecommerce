@@ -3,7 +3,7 @@ import json
 import os
 from aiokafka import AIOKafkaConsumer
 
-KAFKA_BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "kafka:9092")
+KAFKA_BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP_SERVERS")
 
 async def consume_order_events():
     try:

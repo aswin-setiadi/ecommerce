@@ -11,9 +11,10 @@ from .kafka_producer import produce_event
 from .models import User
 from .schemas import UserCreate, UserOut
 
-os.makedirs('/var/log/app', exist_ok=True)
+LOG_PATH= os.getenv('LOG_PATH')
+os.makedirs(LOG_PATH, exist_ok=True)
 logging.basicConfig(
-    filename='/var/log/app/user_service.log',
+    filename=f'{LOG_PATH}/user_service.log',
     level=logging.INFO,
     filemode='a',
     format='%(asctime)s - %(levelname)s - %(message)s'

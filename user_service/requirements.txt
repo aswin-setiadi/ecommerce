@@ -5,3 +5,8 @@ psycopg2-binary
 aiokafka
 pydantic
 pydantic[email]
+pytest
+testcontainers[kafka]
+kafka-python
+httpx
+pydantic[email]

@@ -11,9 +11,10 @@ from .kafka_consumer import consume_user_events
 from .kafka_producer import produce_event
 from .schemas import OrderCreate, OrderOut
 
-os.makedirs('/var/log/app', exist_ok=True)
+LOG_PATH= os.getenv('LOG_PATH')
+os.makedirs(LOG_PATH, exist_ok=True)
 logging.basicConfig(
-    filename='/var/log/app/order_service.log',
+    filename=f'{LOG_PATH}/order_service.log',
     level=logging.INFO,
     filemode='a',
     format='%(asctime)s - %(levelname)s - %(message)s'

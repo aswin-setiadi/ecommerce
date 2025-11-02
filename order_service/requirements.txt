@@ -4,3 +4,8 @@ sqlalchemy
 psycopg2-binary
 aiokafka
 pydantic
+pytest
+testcontainers[kafka]
+kafka-python
+httpx
+pydantic[email]

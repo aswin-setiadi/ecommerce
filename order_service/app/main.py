@@ -39,6 +39,16 @@ def get_db():
 
 @app.post("/orders", response_model= OrderOut, status_code=201)
 async def create_order(order: OrderCreate, background_tasks: BackgroundTasks):
+    """Create a new order after verifying the user exists.
+
+    :param order: OrderCreate object containing order details
+    :type order: OrderCreate
+    :param background_tasks: BackgroundTasks for scheduling Kafka event production
+    :type background_tasks: BackgroundTasks
+    :raises HTTPException: Raises 404 if user not found
+    :return: the newly created Order object
+    :rtype: Order
+    """
     db= next(get_db())
     user= db.query(CachedUser).get(order.user_id)
     if not user:

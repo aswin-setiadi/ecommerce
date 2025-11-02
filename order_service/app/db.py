@@ -1,5 +1,5 @@
 import os
-
+from typing import Dict
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
@@ -11,8 +11,12 @@ SessionLocal= sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base= declarative_base()
 
 def init_db():
+    """Setup database connection and model during API startup (lifespan)
+    """
     Base.metadata.create_all(bind=engine)
 
 class ToDictMixIn:
-    def to_dict(self):
+    def to_dict(self)-> Dict:
+        """Mix In to help convert SQLAlchemy model instance to dict
+        """
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

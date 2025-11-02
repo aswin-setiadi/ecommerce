@@ -13,6 +13,8 @@ from .models import CachedUser
 KAFKA_BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP_SERVERS")
 logger= logging.getLogger(__name__)
 async def consume_user_events():
+    """Background task that consumes 'user_created' events from Kafka and caches users in the local database.
+    """
     while True:
         try:
             consumer = AIOKafkaConsumer(

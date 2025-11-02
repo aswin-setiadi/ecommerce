@@ -14,6 +14,80 @@ mkdir -p user_service/db/data
 docker-compose up --build
 ```
 
+## Testing
+
+It is recommended to comment out user_postgres and order_postgres volumes in docker-compose.yml so the user_id created start at 1. This is also to prevent persisting test data.
+
+1. Create user
+
+```bash
+curl  -X POST \
+  'http://localhost:8001/users' \
+  --header 'Accept: */*' \
+  --header 'User-Agent: Thunder Client (https://www.thunderclient.com)' \
+  --header 'Content: application/json' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{"email":"setiadi@example.com", "name":"Setiadi"}'
+```
+
+2. Get the created user
+
+```bash
+curl  -X GET \
+  'http://localhost:8001/users/1' \
+  --header 'Accept: */*'
+```
+
+3. Create order
+
+```bash
+curl  -X POST \
+  'http://localhost:8002/orders' \
+  --header 'Accept: */*' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+  "product":"coffee",
+  "quantity":100,
+  "total_price":50,
+  "user_id":1
+}'
+```
+
+4. Get the created order
+
+```bash
+curl  -X GET \
+  'http://localhost:8002/orders/1' \
+  --header 'Accept: */*'
+```
+
+5. Create user with existing email
+
+```bash
+curl  -X POST \
+  'http://localhost:8001/users' \
+  --header 'Accept: */*' \
+  --header 'User-Agent: Thunder Client (https://www.thunderclient.com)' \
+  --header 'Content: application/json' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{"email":"setiadi@example.com", "name":"Setiadi"}'
+```
+
+6. Create order with the same payload as 3
+
+```bash
+curl  -X POST \
+  'http://localhost:8002/orders' \
+  --header 'Accept: */*' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+  "product":"coffee",
+  "quantity":100,
+  "total_price":50,
+  "user_id":1
+}'
+```
+
 ## Analysis
 
 ### Architect overview

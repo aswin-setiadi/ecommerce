@@ -4,7 +4,7 @@ WORKDIR /app
 COPY requirements.txt run.sh .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+# COPY . .
 # CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 # CMD ["tail", "-f", "/dev/null"]
 CMD ["./run.sh", "kafka", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

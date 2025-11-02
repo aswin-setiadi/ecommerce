@@ -1,15 +1,6 @@
 version: "3.8"
 
 services:
-  # zookeeper:
-  #   image: bitnamilegacy/zookeeper:latest
-  #   environment:
-  #     ALLOW_ANONYMOUS_LOGIN: "yes"
-  #   networks:
-  #     net2:
-  #       ipv4_address: 10.6.0.18
-  #   ports:
-  #     - "2181:2181"
 
   kafka:
     image: apache/kafka:latest
@@ -46,6 +37,8 @@ services:
         ipv4_address: 10.6.0.20
     ports:
       - "5433:5432"
+    volumes:
+      - "./user_service/db/data:/var/lib/postgresql/data"
 
   order_postgres:
     image: postgres:15
@@ -58,6 +51,8 @@ services:
         ipv4_address: 10.6.0.21
     ports:
       - "5434:5432"
+    volumes:
+      - "./order_service/db/data:/var/lib/postgresql/data"
 
   user_service:
     build:

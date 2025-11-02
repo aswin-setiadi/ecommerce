@@ -1,0 +1,94 @@
+version: "3.8"
+
+services:
+  zookeeper:
+    image: bitnamilegacy/zookeeper:latest
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: "yes"
+    networks:
+      net2:
+        ipv4_address: 10.6.0.18
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: bitnamilegacy/kafka:3.7.1
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ENABLE_KRAFT=no
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - ALLOW_CFG_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+    depends_on:
+      - zookeeper
+    networks:
+      net2:
+        ipv4_address: 10.6.0.19
+    ports:
+      - "9092:9092"
+
+  user_postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: users_db
+    networks:
+      net2:
+        ipv4_address: 10.6.0.20
+    ports:
+      - "5433:5432"
+
+  order_postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: orders_db
+    networks:
+      net2:
+        ipv4_address: 10.6.0.21
+    ports:
+      - "5434:5432"
+
+  user_service:
+    build:
+      context: ./user_service
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@user_postgres:5432/users_db
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    depends_on:
+      - kafka
+      - user_postgres
+    networks:
+      net2:
+        ipv4_address: 10.6.0.22
+    ports:
+      - "8001:8000"
+
+  order_service:
+    build:
+      context: ./order_service
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@order_postgres:5432/orders_db
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    depends_on:
+      - kafka
+      - user_postgres
+    networks:
+      net2:
+        ipv4_address: 10.6.0.23
+    ports:
+      - "8002:8000"
+
+networks:
+  net2:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.6.0.16/28
+          gateway: 10.6.0.17

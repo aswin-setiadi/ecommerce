@@ -1,9 +1,11 @@
 import asyncio
 import json
+import logging
 import os
 from aiokafka import AIOKafkaConsumer
 
 KAFKA_BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP_SERVERS")
+logger= logging.getLogger(__name__)
 
 async def consume_order_events():
     try:

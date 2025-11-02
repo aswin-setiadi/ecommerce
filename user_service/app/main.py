@@ -1,5 +1,7 @@
 import asyncio
 from contextlib import asynccontextmanager
+import logging
+import os
 
 from fastapi import BackgroundTasks, FastAPI, HTTPException
 
@@ -9,7 +11,14 @@ from .kafka_producer import produce_event
 from .models import User
 from .schemas import UserCreate, UserOut
 
-
+os.makedirs('/var/log/app', exist_ok=True)
+logging.basicConfig(
+    filename='/var/log/app/user_service.log',
+    level=logging.INFO,
+    filemode='a',
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+logger= logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -36,6 +45,7 @@ async def create_user(user: UserCreate, background_task: BackgroundTasks):
     new_user= User(**user.model_dump())
     db.add(new_user)
     db.commit()
+    logger.info(f"Created new user: {new_user.to_dict()}")
     # By default session.commit() treat all obj in the session as "expired"
     # through default behavior of expire_on_commit=True.
     # Also this session will be garbage collected after the function return

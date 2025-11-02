@@ -68,6 +68,9 @@ services:
         ipv4_address: 10.6.0.22
     ports:
       - "8001:8000"
+    volumes:
+      - "./logs/user_service:/var/log/app"
+      - "./user_service/app:/app/app"
 
   order_service:
     build:
@@ -84,6 +87,9 @@ services:
         ipv4_address: 10.6.0.23
     ports:
       - "8002:8000"
+    volumes:
+      - "./logs/order_service:/var/log/app"
+      - "./order_service/app:/app/app"
 
 networks:
   net2:

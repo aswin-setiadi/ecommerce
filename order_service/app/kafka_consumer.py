@@ -1,5 +1,6 @@
 import asyncio
 import json
+import logging
 import os
 
 from aiokafka import AIOKafkaConsumer
@@ -7,7 +8,7 @@ from .db import SessionLocal
 from .models import CachedUser
 
 KAFKA_BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP_SERVERS")
-
+logger= logging.getLogger(__name__)
 async def consume_user_events():
     try:
         consumer = AIOKafkaConsumer(

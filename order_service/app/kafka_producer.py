@@ -1,10 +1,11 @@
 import json
+import logging
 import os
 
 from aiokafka import AIOKafkaProducer
 
 KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS")
-
+logger = logging.getLogger(__name__)
 producer = None
 
 async def get_producer():

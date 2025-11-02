@@ -1,6 +1,8 @@
 import asyncio
-
 from contextlib import asynccontextmanager
+import logging
+import os
+
 from fastapi import BackgroundTasks, FastAPI, HTTPException
 
 from .db import init_db, SessionLocal
@@ -9,6 +11,14 @@ from .kafka_consumer import consume_user_events
 from .kafka_producer import produce_event
 from .schemas import OrderCreate, OrderOut
 
+os.makedirs('/var/log/app', exist_ok=True)
+logging.basicConfig(
+    filename='/var/log/app/order_service.log',
+    level=logging.INFO,
+    filemode='a',
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+logger= logging.getLogger(__name__)
 
 
 @asynccontextmanager
@@ -36,6 +46,7 @@ async def create_order(order: OrderCreate, background_tasks: BackgroundTasks):
     new_order= Order(**order.model_dump())
     db.add(new_order)
     db.commit()
+    logger.info(f"Created new order: {new_order.to_dict()}")
     # By default session.commit() treat all obj in the session as "expired"
     # through default behavior of expire_on_commit=True.
     # Also this session will be garbage collected after the function return

@@ -1,6 +1,6 @@
 # Event-drivent Ecommerce Task
 
-I have no experience in ecommerce development so I will start by asking AI tool (copilot or chatgpt) on the task requirement. I will analyse the response and write my thoughts then adjust the respond if needed. These adjustment should be tracked in the workflow section.
+I have no experience in ecommerce development so I will start by asking AI tool (copilot or chatgpt) on the task requirement. I will analyse the response and write my thoughts then adjust the response code during implementation when needed. These adjustment should be tracked in the Analysis and Work Notes section.
 
 ## Installation
 

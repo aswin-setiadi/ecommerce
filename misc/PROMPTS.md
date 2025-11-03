@@ -40,6 +40,6 @@
 
 13. (gemini) why event driven architecture use seperate database
 
-14. (gemini) do I need to set sleep for python async kafka consumer where is use async for msg in consumer
+14. (gemini) do I need to set sleep for python async kafka consumer where it use async for msg in consumer
 
 15. (chatgpt) my kafka container getting error requirement failed: Configured end points kafka:9092 in advertised listeners are already registered by broker 1002

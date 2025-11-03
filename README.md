@@ -108,7 +108,7 @@ Due to the limited time developing this project, in production, these can be imp
 
 2. Using nginx to help with routing, security (DDoS mitigation), SSL/TLS termination and rate limiting.
 
-3. Create environment specific docker-compose.yml, requirements.txt, and Dockerfile (dev env using directory mount for quick iteration and testing vs pytho wheel in production, raw text credentials and dev env configuration for fastapi, kafka, postgresql vs production configuration, testing module installation for dev environment, etc.).
+3. Create environment specific docker-compose.yml, requirements.txt, and Dockerfile (dev env using directory mount for quick iteration and testing vs python wheel in production, raw text credentials and dev env configuration for fastapi, kafka, postgresql vs production configuration stored in secret manager service, testing module installation for dev environment, etc.).
 
 ## Work Notes
 
@@ -118,7 +118,7 @@ In the schema, the Config class within create schema seems to allow pydantic to 
 
 The FastAPI title arg. is mostly used for documentation meta info.
 
-The chatgpt response seems to use deprecated `@app.on_event` decorator. I follow linter suggestion and use lifespan callback as arg.
+The chatgpt response seems to use deprecated `@app.on_event` decorator. I follow linter suggestion and use lifespan callback as arg. Followed example in the fastapi page.
 
 I added `ToDictMixIn` to help mapping sqlachemy model to dictionary with keys equal the model fields. This helps a lot in reducing manual mapping of keys.
 
